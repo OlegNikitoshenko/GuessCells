@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>практикаjs_раздел_6</title>
+</head>
+<body>
+	<style>
+		body, input, button {
+			font-family: Arial;
+			color: aliceblue;
+			background-color: black;
+		}
+		.container {
+			position: relative;
+			max-width: 500px;
+			margin: 40px auto;
+			padding: 20px;
+			background-color: rgba(216, 223, 215, 0.445);
+			border: 1px solid white;
+		}
+		h2	{
+			margin-bottom: 40px;
+		}
+		
+		button {
+			display: block;
+			margin: 5px;
+			padding: 10px;
+			max-width: 100px;
+			box-sizing: border-box;
+		}
+		li {
+			list-style: none;
+			line-height: 125%;
+		}
+		.input {
+			display: block;
+			padding: 10px;
+			margin: 5px;
+		}
+		.game {
+			display: flex;
+		}
+		.admit  {
+			display: block;
+		}
+		.result {
+			position: absolute;
+			z-index: 10;
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+			height: 100%;
+			background-color: grey;
+			left: 0;
+			top: 0;
+		}
+		.result__decor {
+			width: 100%;
+			height: 25px;
+			background-color: #fff;
+		}
+		.result__message {
+			padding: 25px;
+			text-align: center;
+			flex-grow: 1;
+		}
+		.result__admit {
+			margin: 0 auto;
+			width: 30%;
+		}
+		.invisible {
+			display: none;
+		}
+
+
+	</style>
+
+	<h1>Раздел 6</h1>
+	<div class="task-6 container">
+		<h2>Угадай ячейки</h2>
+		<ul class="field"></ul>
+	</div>
+	<script defer>
+		//_______________________________________________Create field___________________________________
+
+		const field = document.querySelector('.field');
+		const cells = [];
+		const makeCells = (arr) => {
+			for ( let elem of arr) {
+				elem = document.createElement('LI');
+				elem.classList.add('cell');
+				
+			}
+		}
+
+
+
+
+		//_______________________________________________Game___________________________________
+
+
+
+
+
+
+
+
+	</script>
+	
+</body>
+</html>
