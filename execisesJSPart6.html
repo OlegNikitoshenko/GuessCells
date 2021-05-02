@@ -24,57 +24,46 @@
 		h2	{
 			margin-bottom: 40px;
 		}
-		
-		button {
+		.button {
 			display: block;
-			margin: 5px;
-			padding: 10px;
-			max-width: 100px;
-			box-sizing: border-box;
-		}
-		li {
-			list-style: none;
-			line-height: 125%;
-		}
-		.input {
-			display: block;
-			padding: 10px;
-			margin: 5px;
-		}
-		.game {
-			display: flex;
-		}
-		.admit  {
-			display: block;
-		}
-		.result {
-			position: absolute;
-			z-index: 10;
-			display: flex;
-			flex-direction: column;
-			width: 100%;
-			height: 100%;
-			background-color: grey;
-			left: 0;
-			top: 0;
-		}
-		.result__decor {
-			width: 100%;
-			height: 25px;
-			background-color: #fff;
-		}
-		.result__message {
-			padding: 25px;
+			margin: 10px auto;
 			text-align: center;
-			flex-grow: 1;
 		}
-		.result__admit {
+
+		.game {
 			margin: 0 auto;
-			width: 30%;
+		}
+		.message {
+			margin: 10px auto;
+			font-size: 14px;
+			text-align: center;
+		}
+		.field {
+			margin: 0 auto;
+			border: 1px solid rgb(241, 239, 239);
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-around;
+			align-items: center;
+			height: 300px;
+			width: 300px;
+		}
+		.cell {
+			background-color: #fff;
+			box-sizing: border-box;
+			height: 9.5%;
+			width: 9.5%;	
+		}
+		.clicked {
+			background-color: red;
+		}
+		.guessed {
+			background-color: green;
 		}
 		.invisible {
 			display: none;
 		}
+
 
 
 	</style>
@@ -82,31 +71,99 @@
 	<h1>Раздел 6</h1>
 	<div class="task-6 container">
 		<h2>Угадай ячейки</h2>
-		<ul class="field"></ul>
+		<div class="game">
+			<div class="message">Я загадал 10 случайных ячеек. Попробуйте отгадать их за 45 секунд</div>
+			<button class="button">Начать игру</button>
+			<div class="field invisible"></div>
+		</div>
 	</div>
 	<script defer>
-		//_______________________________________________Create field___________________________________
+		//_______________________________________________Fill field___________________________________
 
 		const field = document.querySelector('.field');
 		const cells = [];
 		const makeCells = (arr) => {
-			for ( let elem of arr) {
-				elem = document.createElement('LI');
+			for ( let i = 1; i <= 100; i++) {
+				let elem = document.createElement('div');
 				elem.classList.add('cell');
-				
+				arr.push(elem);
+				field.appendChild(elem);
 			}
 		}
+		makeCells(cells);
 
 
-
+		//_____________________________________________timer____________________________________
+		let gameOver = false;
+		let victory = false;
+		const message = document.querySelector('.message');
+		let time = 45;
+		const timer = () => {
+			setTimeout(() => {
+				if (victory){
+					return;
+				}
+				if ( time === 0) {
+					message.innerHTML = `Вы проиграли:(`;
+					button.classList.remove('invisible');
+					button.innerHTML = "Перезапустить игру."
+					gameOver = true;
+					button.addEventListener('click', () => {
+						location.reload();
+					})
+					return;
+				}
+				time--;
+				message.innerHTML = `Осталось времени: ${time} секунд.`;
+				timer();
+			}, 1000)
+		}
 
 		//_______________________________________________Game___________________________________
-
-
-
-
-
-
+		const button = document.querySelector('button');
+		button.addEventListener('click', () => {
+			field.classList.remove('invisible');
+			timer(time);
+			button.classList.add('invisible');
+		})
+		function getRandomInt(min, max) {
+			return Math.ceil(Math.random() * (max - min + 1)) + min;
+		}
+		const chosenArr = [];
+		const chooseCells = (arr, arr2) => {
+			for ( let i = 1; arr2.length < 10; i++ ) {
+				let randomN = getRandomInt(0, 99);
+				if ( !arr2.includes(randomN) && randomN >= 0 && randomN <= 99 ) {
+					arr2.push(randomN);
+					arr[randomN].classList.add('chosen-cell');
+				}
+			}
+			return arr;
+		}
+		chooseCells(cells, chosenArr);
+		
+		field.addEventListener('mousedown', function handler(ev) {
+			if (gameOver) {
+				field.removeEventListener('mousedown', handler);
+			} else {
+				if (ev.target.classList.contains('cell') && !ev.target.classList.contains('chosen-cell')  ) {
+					ev.target.classList.add('clicked');
+				} else if (ev.target.classList.contains('cell') && !ev.target.classList.contains('guessed')  ) {
+					ev.target.classList.add('guessed');
+					chosenArr.pop();
+				};
+				if (chosenArr.length === 0) {
+					victory = true;
+					message.innerHTML= 'Вы выиграли! :)';
+					button.classList.remove('invisible');
+					button.innerHTML = "Перезапустить игру."
+					gameOver = true;
+					button.addEventListener('click', ()=> {
+						location.reload();
+					})
+				}
+			}
+		})
 
 
 	</script>
